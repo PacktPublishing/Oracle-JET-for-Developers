@@ -1,0 +1,948 @@
+﻿Area chart :
+----------------------------------------------------------------------------------------------------------------
+
+    HTML:
+
+<div id='chart-container'>
+  <div id="areaChart" data-bind="ojComponent: {
+       component: 'ojChart',
+       type: 'area',
+       series: areaSeriesValue,
+       groups: areaGroupsValue,
+       animationOnDisplay: 'auto',
+       animationOnDataChange: 'auto',
+       orientation: orientationValue,
+       stack: stackValue,
+       hoverBehavior: 'dim'
+     }"
+     style="max-width:500px;width:100%;height:350px;">
+  </div>
+  <div id="myToolbar" aria-label="Chart Display Options Toolbar" 
+   aria-controls="areaChart" data-bind="ojComponent: {component:'ojToolbar'}"
+   style="max-width:500px;width:100%;">
+    <!-- vertical/horizontal toggle button -->
+    <div id="radioButtonset" data-bind="ojComponent: {component: 'ojButtonset',
+     focusManagement:'none', checked: orientationValue, chroming: 'half'}"
+     aria-label="Choose an orientation.">
+      <!-- ko foreach: orientationOptions -->
+      <label data-bind="attr: {for: id}"></label>
+      <input type="radio" name="orientation" data-bind="value: value, 
+       attr: {id: id}, ojComponent: {component: 'ojButton', label: label,
+       icons: {start: icon}, display: 'icons'}"/>
+      <!-- /ko -->
+    </div>
+    <span role="separator" aria-orientation="vertical" class="oj-toolbar-separator"></span>
+    <!-- unstacked/stacked toggle button -->
+    <div id="radioButtonset2" data-bind="ojComponent: {component: 'ojButtonset',
+     focusManagement:'none', checked: stackValue, chroming: 'half'}"
+     aria-label="Choose a stack setting.">
+      <!-- ko foreach: stackOptions -->
+      <label data-bind="attr: {for: id}"></label>
+      <input type="radio" name="stack" data-bind="value: value, attr: {id: id},
+       ojComponent: {component: 'ojButton', label: label, icons: {start: icon},
+       display: 'icons'}"/>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>
+
+    JavaScript:
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojchart', 'ojs/ojtoolbar'],
+function(oj, ko, $)
+{ 
+    function ChartModel() {
+        var self = this;
+       
+        /* toggle button variables */
+        self.stackValue = ko.observable('off');
+        self.orientationValue = ko.observable('vertical');
+       
+        /* chart data */
+        var areaSeries = [{name : "Series A", items : [74, 42, 70, 46]},
+                          {name : "Series B", items : [50, 38, 46, 54]},
+                          {name : "Series C", items : [34, 22, 30, 32]},
+                          {name : "Series D", items : [18, 16, 4, 22]}];
+   
+        var areaGroups = ["Group 1", "Group 2", "Group 3", "Group 4"];
+  
+       
+        this.areaSeriesValue = ko.observableArray(areaSeries);
+        this.areaGroupsValue = ko.observableArray(areaGroups);
+       
+        /* toggle buttons*/
+        self.stackOptions = [
+            {id: 'unstacked', label: 'unstacked', value: 'off', icon: 'oj-icon demo-area-vert'},
+            {id: 'stacked', label: 'stacked', value: 'on', icon: 'oj-icon demo-area-stack'}
+        ];
+        self.orientationOptions = [
+            {id: 'vertical', label: 'vertical', value: 'vertical', icon: 'oj-icon demo-area-vert'},
+            {id: 'horizontal', label: 'horizontal', value: 'horizontal', icon: 'oj-icon demo-area-horiz'}
+        ];
+    }
+   
+    var chartModel = new ChartModel();
+   
+            $(
+                        function()
+                        {
+    ko.applyBindings(chartModel, document.getElementById('chart-container'));
+                        }
+            );
+});       
+
+ 
+1. Dial Gauge :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id='gauge-container'>
+<div id="gauge1"
+   data-bind="ojComponent: {
+	 component: 'ojDialGauge',
+	 value: gaugeValue,
+	 readOnly: false,
+	 animationOnDisplay: 'auto',
+	 indicator: 'needleAlta',
+	 background: 'circleAlta',
+	 metricLabel: {rendered: 'on',
+	 style: 'font-size: 18px; font-weight: bold; font-family: Georgia, Times New Roman, serif;'}
+	}"
+	style="width:250px;height:250px">
+</div>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojgauge'],
+function(oj, ko, $)
+{
+		function dialGaugeData() {
+					this.gaugeValue = ko.observable(65);
+		}
+		$(
+					function()
+					{
+	   ko.applyBindings(new dialGaugeData(), document.getElementById('gauge-container'));
+					}
+		);
+});
+
+
+2. LED Gauge :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="ledContent" style="height:100%; width: 100%; position:relative;">
+<svg height="0" width="0">
+<defs>
+  <pattern id="pattern"
+	width="3" height="3"
+	patternUnits="userSpaceOnUse"
+	patternTransform="rotate(45)">
+	<rect width="3" height="3" fill="#336791"></rect>
+	<rect x="1.5" width="3" height="3" fill="#ADD8E6" ></rect>
+  </pattern>
+</defs>
+</svg>
+<table>
+
+<tr>
+  <td>
+	<label>Thresholds:</label>
+  </td>
+  <td>
+	<div title="25 (Low)" style="float: left;width:40px;height:40px;" data-bind="ojComponent: {
+					  component: 'ojLedGauge',
+					  min: 0,
+					  max: 100,
+					  thresholds: thresholdValues,
+					  metricLabel: {rendered: 'on'},
+					  value: lowValue}"></div>
+	<div title="50 (Medium)" style="float: left;width:40px;height:40px;" data-bind="ojComponent: {
+					   component: 'ojLedGauge',
+					   min: 0, max: 100,
+					   thresholds: thresholdValues,
+					   metricLabel: {rendered: 'on'},
+					   value: midValue}"></div>
+	<div title="75 (High)" style="float: left;width:40px;height:40px;" data-bind="ojComponent: {
+					  component: 'ojLedGauge',
+					  min: 0,
+					  max: 100,
+					  thresholds: thresholdValues,
+					  metricLabel: {rendered: 'on'},
+					  value: highValue}"></div>
+  </td>
+</tr>
+
+</table>
+</div>
+
+
+JavaScript:
+
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojgauge'],
+	  function(oj, ko, $)
+	  {
+		function ViewModel() {
+		  this.lowValue = ko.observable(25);
+		  this.midValue = ko.observable(50);
+		  this.highValue = ko.observable(75);
+		  this.thresholdValues = [{max: 33}, {max: 67}, {}];
+		}
+		$(
+				function()
+				{
+				  ko.applyBindings(new ViewModel(), document.getElementById('ledContent'));
+				}
+		);
+	  });
+
+
+3. Rating Gauge :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+
+<div id='gauge-container'>
+<svg height="0" width="0">
+<defs>
+  <pattern id="pattern"
+	width="3" height="3"
+	patternUnits="userSpaceOnUse"
+	patternTransform="rotate(45)">
+	<rect width="3" height="3" fill="#336791"></rect>
+	<rect x="1.5" width="3" height="3" fill="#ADD8E6" ></rect>
+  </pattern>
+  <pattern id="hoverPattern"
+	width="3" height="3"
+	patternUnits="userSpaceOnUse"
+	patternTransform="rotate(45)">
+	<rect width="3" height="3" fill="red"></rect>
+	<rect x="1.5" width="3" height="3" fill="#ADD8E6" ></rect>
+  </pattern>
+</defs>
+</svg>
+<table> 
+<tr>
+  <td>
+	<label> Editable:</label>
+  </td>
+  <td>
+	<div id="gauge2"
+					data-bind="ojComponent: {
+					  component: 'ojRatingGauge',
+					  value:ratingValue2,
+					  readOnly: false
+					 }"
+					 style="width:120px;height:25px">
+	</div>
+  </td>
+</tr> 
+</table>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojgauge'],
+	  function(oj, ko, $)
+	  {
+		this.gaugeValue = ko.observable(3);
+		function ratingGaugeData() {
+		  this.ratingValue2 = ko.observable(3);
+		  this.rawValue = ko.observable();
+		  this.thresholdValues = [{max: 1, shortDesc: 'Poor'},
+								  {max: 2, shortDesc: 'Needs Improvement'},
+								  {max: 3, shortDesc: 'Satisfactory'},
+								  {max: 4, shortDesc: 'Exceeds Expectations'},
+								  {max: 5, shortDesc: 'Outstanding'}];
+								  this.optionChangeAction = function(e, data) {
+									if(data.option == "value") {
+			  ratingGaugeModel.ratingValue10 = data['value'];
+			  $('#currentStepText').html("optionChange: " + ko.toJSON(data['value']));
+			  $('#currentStepText').css('color', 'Green');
+									}
+						  }
+		}
+		var ratingGaugeModel = new ratingGaugeData();
+		$(
+				function()
+				{
+				  ko.applyBindings(ratingGaugeModel, document.getElementById('gauge-container'));
+				}
+		);
+	   
+	  });
+
+
+4. Status Meter Gauge :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id='gauge-container'>
+<table>
+
+<tr>
+  <td>
+	<label>Reference Lines:</label>
+  </td>
+  <td style="width:200px;">
+	<div id="gauge" title="Value: 20<br>Reference Lines: Low 33, Medium 67, High 100" data-bind="ojComponent: {
+		 component: 'ojStatusMeterGauge',
+		 min: 0,
+		 max: 100,
+		 value: value1, 
+		 orientation: 'circular',
+		 optionChange: gaugeOptionChange,
+		 metricLabel: {rendered: 'on'},
+		 plotArea: {rendered: 'on'},
+		 referenceLines:
+		 [{value: 33, color:'red'},
+		 {value: 67, color:'green'}],
+		 indicatorSize: 0.5,
+		 readOnly: false
+		 }"
+		 style=
+		 "align:center;
+		 margin-top:5px;
+		 margin-bottom:5px;
+		 height:50px;
+		 width:45%;">
+	</div>
+  </td>
+
+</tr>
+<tr>
+ 
+  <td>
+	<label>Start Angle and Angle Extent:</label>
+  </td>
+  <td>
+	<div id="gauge8"
+		 data-bind="ojComponent: {
+		 component: 'ojStatusMeterGauge',
+		 min: 0,
+		 max: 100,
+		 value: value2, 
+		 orientation: 'circular',
+		 startAngle:180,
+		 angleExtent: 180,
+		 metricLabel: {rendered: 'on'},
+		 plotArea: {rendered: 'on'},
+		 readOnly: false
+		 }"
+		 style=
+		 "align:center;
+		 margin-top:5px;
+		 margin-bottom:5px;
+		 height:50px;
+		 width:45%; ">
+	</div>
+  </td>
+</tr>
+
+
+</table>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojgauge'],
+	  function(oj, ko, $)
+	  {
+		function statusmeterGaugeData() {
+		  this.value1 = ko.observable(20); 
+		  this.value2 = ko.observable(80); 
+		  this.thresholdValues = [{max: 33}, {max: 67}, {}];
+		  var converterFactory = oj.Validation.converterFactory('number');
+		  var currencyConverter = converterFactory.createConverter({style: 'currency', currency: 'USD'});
+		  this.valueConverter = ko.observable(currencyConverter);
+		  this.gaugeOptionChange = function(e, data) {
+			if (data.option == "value") {
+			  $("#gauge").attr('title', "Value: " + Math.round(data['value']) + "<br>Reference Lines: Low 33, Medium 67, High 100");
+			  $("#gauge").ojStatusMeterGauge('refresh');
+			}
+		  }
+		}
+		var statusmeterGaugeModel = new statusmeterGaugeData();
+		$(
+				function()
+				{
+				  ko.applyBindings(statusmeterGaugeModel, document.getElementById('gauge-container'));
+				}
+		);
+	  });
+
+
+Sunburst :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id='sunburst-container'>
+<div data-bind="ojComponent: {
+		component: 'ojSunburst',
+		animationOnDisplay: 'auto',
+		sizeLabel: 'Population',
+		colorLabel: 'Median Household Income',
+		nodeDefaults: {labelDisplay: 'rotated'},
+		nodes: nodeValues
+	}"
+	style="max-width:750px;width:100%; height:750px;">
+</div>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+'ojs/ojsunburst'],
+function(oj, ko, $)
+{ 
+var handler = new oj.ColorAttributeGroupHandler();
+var unitedStates = createNode("United States", 301461533, 51425);
+var reg_NE = createNode("Northeast Region", 54906297, 57208);
+var reg_MW = createNode("Midwest Region", 66336038, 49932);
+var reg_SO = createNode("South Region", 110450832, 47204);
+var reg_WE = createNode("West Region", 69768366, 56171);
+
+var div_NE = createNode("New England", 14315257, 61511);
+var div_MA = createNode("Middle Atlantic", 40591040, 55726);
+var div_EN = createNode("East North Central", 46277998, 50156);
+var div_WN = createNode("West North Central", 20058040, 49443);
+var div_SA = createNode("South Atlantic", 57805475, 50188);
+var div_ES = createNode("East South Central", 17966553, 41130);
+var div_WS = createNode("West South Central", 34678804, 45608);
+var div_MO = createNode("Mountain", 21303294, 51504);
+var div_PA = createNode("Pacific", 48465072, 58735);
+addChildNodes(unitedStates, [reg_NE, reg_MW, reg_SO, reg_WE]);
+addChildNodes(reg_NE, [div_NE, div_MA]);
+addChildNodes(reg_MW, [div_EN, div_WN]);
+addChildNodes(reg_SO, [div_SA, div_ES, div_WS]);
+addChildNodes(reg_WE, [div_MO, div_PA]);
+addChildNodes(div_NE, [
+	createNode("Connecticut", 3494487, 67721),
+	createNode("Maine", 1316380, 46541),
+	createNode("Massachusetts", 6511176, 64496),
+	createNode("New Hampshire", 1315419, 63033),
+	createNode("Rhode Island", 1057381, 55569),
+	createNode("Vermont", 620414, 51284) 
+]);
+addChildNodes(div_MA, [
+	createNode("New Jersey", 8650548, 68981),
+	createNode("New York", 19423896, 55233),
+	createNode("Pennsylvania", 12516596, 49737) 
+]);
+addChildNodes(div_EN, [
+	createNode("Indiana", 6342469, 47465),
+	createNode("Illinois", 12785043, 55222),
+	createNode("Michigan", 10039208, 48700),
+	createNode("Ohio", 11511858, 47144),
+	createNode("Wisconsin", 5599420, 51569) 
+]);
+addChildNodes(div_WN, [
+	createNode("Iowa", 2978880, 48052),
+	createNode("Kansas", 2777835, 48394),
+	createNode("Minnesota", 5188581, 57007),
+	createNode("Missouri", 5904382, 46005),
+	createNode("Nebraska", 1772124, 47995),
+	createNode("North Dakota", 639725, 45140),
+	createNode("South Dakota", 796513, 44828)
+]);
+addChildNodes(div_SA, [
+	createNode("Delaware", 863832, 57618),
+	createNode("District of Columbia", 588433, 56519),
+	createNode("Florida", 18222420, 47450),
+	createNode("Georgia", 9497667, 49466),
+	createNode("Maryland", 5637418, 69475),
+	createNode("North Carolina", 9045705, 45069),
+	createNode("South Carolina", 4416867, 43572),
+	createNode("Virginia", 7721730, 60316),
+	createNode("West Virginia", 1811403, 37356)
+]);
+addChildNodes(div_ES, [
+	createNode("Alabama", 4633360, 41216),
+	createNode("Kentucky", 4252000, 41197),
+	createNode("Mississippi", 2922240, 36796),
+	createNode("Tennessee", 6158953, 42943)
+]);
+addChildNodes(div_WS, [
+	createNode("Arkansas", 2838143, 38542),
+	createNode("Louisiana", 4411546, 42167),
+	createNode("Oklahoma", 3610073, 41861),
+	createNode("Texas", 23819042, 48199)
+]);
+addChildNodes(div_MO, [
+	createNode("Arizona", 6324865, 50296),
+	createNode("Colorado", 4843211, 56222),
+	createNode("Idaho", 1492573, 46183),
+	createNode("Montana", 956257, 43089),
+	createNode("Nevada", 2545763, 55585),
+	createNode("New Mexico", 1964860, 42742),
+	createNode("Utah", 2651816, 55642),
+	createNode("Wyoming", 523949, 51990)
+]);
+addChildNodes(div_PA, [
+	createNode("Alaska", 683142, 64635),
+	createNode("California", 36308527, 60392),
+	createNode("Hawaii", 1280241, 64661),
+	createNode("Oregon", 3727407, 49033),
+	createNode("Washington", 6465755, 56384)
+]);
+function createNode(label, population, meanIncome) {
+	return {label: label,
+			id: label,
+			value: population,
+			color: getColor(meanIncome),
+			shortDesc: "&lt;b&gt;" + label +
+			  "&lt;/b&gt;&lt;br/&gt;Population: " +
+			  population+"&lt;br/&gt;Income: " + meanIncome};
+}
+function getColor(meanIncome) {
+	if (meanIncome < 45000) // 1st quartile
+		return handler.getValue('1stQuartile');
+	else if (meanIncome < 49000) // 2nd quartile
+		return handler.getValue('2ndQuartile');
+	else if (meanIncome < 56000) // 3rd quartile
+		return handler.getValue('3rdQuartile');
+	else
+		return handler.getValue('4thQuartile');
+}
+function addChildNodes(parent, childNodes) {
+	parent.nodes = [];
+	for (var i = 0; i < childNodes.length; i++) {
+		parent.nodes.push(childNodes[i]);
+	}
+}
+$(
+		function()
+		{
+ko.applyBindings({nodeValues:ko.observableArray([unitedStates])},
+  document.getElementById('sunburst-container'));
+		}
+);
+});        
+
+
+Accordion :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="accordionPage" data-bind="ojComponent: {component: 'ojAccordion'}">
+<div id="c3" data-bind="ojComponent: {component: 'ojCollapsible', expanded:true}">
+<span>Header 1</span>
+<div>
+  <label id="mainlabelid">Vehicle of your Choice</label>
+  <div id="radiosetSetBasicDemoId" aria-labelledby="mainlabelid"
+	 data-bind="ojComponent: {component: 'ojRadioset',
+			   value: 'car'}" >
+	<span class="oj-choice-item">
+		<input id="bikeopt" type="radio" name="vehicle" value="bike">
+		<label for="bikeopt">Bike</label>
+	</span>
+	<span class="oj-choice-item">
+		<input id="caropt" type="radio" name="vehicle" value="car">
+		<label for="caropt">Car</label>
+	</span>
+	<span class="oj-choice-item">
+		<input id="planeopt" type="radio" name="vehicle" value="plane">
+		<label for="planeopt">Plane</label>
+	</span>
+  </div>
+</div>
+</div>
+<div id="c4">
+<span>Header 2</span>
+<div id="nestedAccordion" data-bind="ojComponent: {component: 'ojAccordion'}" >
+  <div id="ic1">
+	<span>Inner Header 2.1</span>
+	<p class="oj-p">Inner Content of 2.1</p>
+  </div>
+  <div id="ic2" data-bind="ojComponent: {component: 'ojCollapsible'}">
+	<span>Inner Header 2.2</span>
+	<p class="oj-p">Inner Content of 2.2</p>
+  </div>
+</div>
+</div>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojaccordion', 'ojs/ojcollapsible', 'ojs/ojradioset'],
+function(oj, ko, $)
+{
+$(
+function()
+{
+  ko.applyBindings(null, document.getElementById('accordionPage'))
+}
+);
+});
+
+2. Modal Dialog :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="dialogWrapper">
+<div style="display:none" id="modalDialog1" title="Modal Dialog Title"
+   data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide'}">
+ <div class="oj-dialog-body">
+   A movable, resizable and closable dialog window.
+ </div>
+ <div class="oj-dialog-footer">
+	<button id="okButton" data-bind="ojComponent: {component: 'ojButton', label: 'OK'}"> </button>
+  </div>
+</div>
+<button id="buttonOpener" data-bind="ojComponent: {component: 'ojButton', label: 'Open Dialog'}"></button>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojdialog'],
+function(oj, ko, $)
+{ 
+function dialogModel() {
+var self = this;
+self.handleOpen = $("#buttonOpener").click(function() {
+   $("#modalDialog1").ojDialog("open"); });
+self.handleOKClose = $("#okButton").click(function() {
+   $("#modalDialog1").ojDialog("close"); });
+}
+$(function() {
+ko.applyBindings(new dialogModel(), document.getElementById('dialogWrapper'));
+});
+});
+
+Navigation List :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="navlistdemo">
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item">
+	   <label id="navigationLevellabelid">Navigation Level</label>
+	   <div id="navigationLevelRadioId" aria-labelledby="navigationLevellabelid"
+			data-bind="ojComponent: {
+			 component: 'ojRadioset',
+			 value: navigationLevel}" >
+		   <span class="oj-choice-item">
+			   <input id="application" type="radio" name="navigationLevel" value="application">
+			   <label for="application">Application</label>
+		   </span>
+		   <span class="oj-choice-item">
+			   <input id="page" type="radio" name="navigationLevel" value="page">
+			   <label for="page">Page</label>
+		   </span>
+	   </div>
+	</div>
+	<div class="oj-flex-item">
+		<label id="condenseLabel" for="condense">Condense</label>
+		<input id="condense" data-bind="ojComponent: {component: 'ojSwitch', value: isChecked}" />
+	</div>
+	<div class="oj-flex-item">
+		<label id="contrastBgLabel" for="contrastBgSwitch">Contrast Background</label>
+		<input id="contrastBgSwitch" data-bind="ojComponent: {component: 'ojSwitch', value: isContrastBackground}" />
+	</div>
+</div>
+<p>
+<h4>With Only Text </h4>
+	  <div class="navlistcontainer">
+		<div aria-label="Choose a navigation item" data-bind="ojComponent:{
+							component: 'ojNavigationList',
+							drillMode: 'none',
+							selection: 'home5',
+							navigationLevel: navigationLevel,
+							edge: 'top'}" >
+		<ul >
+			<li id="home5">
+			  <a href="#">Home</a>
+			</li>
+			<li id="gettingstarted5">
+			  <a href="#">Getting Started</a>
+			</li>
+			<li id="cookbook5">
+			  <a href="#">Cookbook</a>
+			</li>
+			<li id="stylelab5" class="oj-disabled">
+			  <a href="#">Style Lab</a>
+			</li>
+			<li id="library5" >
+				<a href="#" >Library</a>
+			</li>
+		</ul>
+		</div>
+	  </div>
+<h4>With Text and Icons</h4>
+	  <div class="navlistcontainer">
+		<div aria-label="Choose a navigation item" data-bind="ojComponent:{
+							component: 'ojNavigationList',
+							drillMode: 'none',
+							selection: 'home4',
+							navigationLevel: navigationLevel,
+							edge: 'top'}" >
+		  <ul>
+			  <li id="home4">
+				<a href="#">
+					<span class="oj-navigationlist-item-icon
+								 demo-home-icon-24 demo-icon-font-24">
+					</span>Home</a>
+			  </li>
+			  <li id="gettingstarted4">
+				<a href="#">
+					<span class="oj-navigationlist-item-icon
+								 demo-education-icon-24 demo-icon-font-24">
+					</span>Getting Started</a>
+			  </li>
+			  <li id="cookbook4">
+				<a href="#">
+					<span class="oj-navigationlist-item-icon
+								 demo-catalog-icon-24 demo-icon-font-24">
+					</span>Cookbook</a>
+			  </li>
+			  <li id="stylelab4" class="oj-disabled">
+				<a href="#">
+					<span class="oj-navigationlist-item-icon
+								  demo-palette-icon-24 demo-icon-font-24">
+					</span>Style Lab</a>
+			  </li>
+			  <li id="library4" >
+				  <a href="#" >
+					  <span class="oj-navigationlist-item-icon
+						  demo-library-icon-24 demo-icon-font-24">
+					  </span>Library</a>
+			  </li>
+		  </ul>
+		</div>
+	  </div>
+		<h4> With only Icons</h4>
+		<div class="navlistcontainer">
+		  <div aria-label="Choose a navigation item" data-bind="ojComponent:{
+							  component: 'ojNavigationList',
+							  drillMode: 'none',
+							  display:'icons',
+							  selection: 'home1',
+							  navigationLevel: navigationLevel,
+							  edge: 'top'}">
+			<ul >
+				<li id="home1">
+				  <a href="#">
+					  <span class="oj-navigationlist-item-icon
+								   demo-home-icon-24 demo-icon-font-24">
+					  </span>Home</a>
+				</li>
+				<li id="gettingstarted1">
+				  <a href="#">
+					  <span class="oj-navigationlist-item-icon
+								   demo-education-icon-24 demo-icon-font-24">
+					  </span>Getting Started</a>
+				</li>
+				<li id="cookbook1">
+				  <a href="#">
+					  <span class="oj-navigationlist-item-icon
+								   demo-catalog-icon-24 demo-icon-font-24">
+					  </span>Cookbook</a>
+				</li>
+				<li id="stylelab1" class="oj-disabled">
+				  <a href="#">
+					  <span class="oj-navigationlist-item-icon
+									demo-palette-icon-24 demo-icon-font-24">
+					  </span>Style Lab</a>
+				</li>
+				<li id="library1" >
+					<a href="#" >
+						<span class="oj-navigationlist-item-icon
+							demo-library-icon-24 demo-icon-font-24">
+						</span>Library</a>
+				</li>
+			</ul>
+		  </div>
+	  </div> 
+<h4> With Stacked Label and Icon</h4>
+<div class="navlistcontainer">
+  <div aria-label="Choose a navigation item" data-bind="ojComponent:{
+					  component: 'ojNavigationList',
+					  drillMode: 'none',
+					  selection: 'home2',
+					  navigationLevel: navigationLevel,
+					  edge: 'top'}" class="oj-navigationlist-stack-icon-label">
+	<ul>
+		<li id="home2">
+		  <a href="#">
+			  <span class="oj-navigationlist-item-icon
+						   demo-home-icon-24 demo-icon-font-24">
+			  </span>Home</a>
+		</li>
+		<li id="gettingstarted2">
+		  <a href="#">
+			  <span class="oj-navigationlist-item-icon
+						   demo-education-icon-24 demo-icon-font-24">
+			  </span>Getting Started</a>
+		</li>
+		<li id="cookbook2">
+		  <a href="#">
+			  <span class="oj-navigationlist-item-icon
+						   demo-catalog-icon-24 demo-icon-font-24">
+			  </span>Cookbook</a>
+		</li>
+		<li id="stylelab2" class="oj-disabled">
+		  <a href="#">
+			  <span class="oj-navigationlist-item-icon
+							demo-palette-icon-24 demo-icon-font-24">
+			  </span>Style Lab</a>
+		</li>
+		<li id="library2" >
+			<a href="#" >
+				<span class="oj-navigationlist-item-icon
+					demo-library-icon-24 demo-icon-font-24">
+				</span>Library</a>
+		</li>
+	</ul>
+  </div>
+</div>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore',
+'knockout',
+'jquery',
+'ojs/ojknockout',
+'ojs/ojnavigationlist',
+'ojs/ojswitch',
+'ojs/ojradioset'
+],
+function(oj, ko, $)
+// this callback gets executed when all required modules are loaded
+{
+$(function() {
+	function ViewModel() {
+	   this.navigationLevel = ko.observable('page');
+	   this.isChecked = ko.observable();
+	   this.isChecked.subscribe(function(newValue) {
+		   var navlistInstances = $('#navlistdemo').find(':oj-navigationlist');
+		   if(newValue) {
+			   navlistInstances.addClass('oj-sm-condense');
+		   } else {
+			   navlistInstances.removeClass('oj-sm-condense');
+		   }
+	   });
+	   this.isContrastBackground = ko.observable(false);
+	   this.isContrastBackground.subscribe(function(newValue) {
+		   if(newValue) {
+			   $(".navlistcontainer").addClass("demo-panel-contrast1 oj-contrast-marker");
+		   } else {
+			   $(".navlistcontainer").removeClass("demo-panel-contrast1 oj-contrast-marker");
+		   }
+	   });
+	}
+	var vm = new ViewModel();
+	ko.applyBindings(vm, document.getElementById('navlistdemo'));
+});
+}
+);
+
+
+4.Panel :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="panelPage">
+<div class="oj-flex">
+<div class="oj-panel oj-margin demo-panel-customizations">
+	<i>default</i>
+</div>
+<div class="oj-panel oj-panel-alt1 oj-margin demo-panel-customizations">
+  Panel One
+</div>
+<div class="oj-panel oj-panel-alt2 oj-margin demo-panel-customizations">
+  Panel Two
+</div>
+<div class="oj-panel oj-panel-alt3 oj-margin demo-panel-customizations">
+  Panel Three
+</div>
+<div class="oj-panel oj-panel-alt4 oj-margin demo-panel-customizations">
+  Panel Four
+</div>
+<div class="oj-panel oj-panel-alt5 oj-margin demo-panel-customizations">
+  Panel Five
+</div>
+</div>
+</div>
+
+
+CSS:
+
+
+.demo-panel-customizations {
+  width:  100px;
+  height: 100px;
+}
+
+
+5.Tab:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="tabs-container">
+<div id="tabs" data-bind="ojComponent:{component: 'ojTabs', disabledTabs: [3]}">
+<!-- tab bar -->
+<ul>
+  <li><span>Tab One</span></li>
+  <li><span>Tab Two</span></li>
+  <li><span>Tab Three</span></li>
+  <li><span>Disabled Tab</span></li>
+</ul>
+<!-- tab contents -->
+<div id="tabs-1">
+  <p>Tab One Content</p>
+</div>
+<div id="tabs-2">
+  <p>Tab Two Content</p>
+</div>
+<div id="tabs-3">
+  <p>Tab Three Content</p>
+</div>
+<div id="tabs-4">
+  <p>Disabled Tab Content</p>
+</div>
+</div>
+</div>
+
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojtabs', 'ojs/ojconveyorbelt'],
+function(oj, ko, $)
+{ 
+$(
+function()
+{
+  ko.applyBindings(null, document.getElementById('tabs-container'))
+}
+);
+});

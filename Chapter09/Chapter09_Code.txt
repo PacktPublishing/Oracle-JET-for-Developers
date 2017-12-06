@@ -1,0 +1,157 @@
+﻿QUnit :
+----------------------------------------------------------------------------------------------------------------
+
+NPM: 
+npm install --save-dev qunitjs
+YARN: 
+yarn add qunitjs --dev
+Bower: 
+bower install --save-dev qunit
+
+HTML:
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+
+JavaScript:
+	var data = {
+    ControlPanel: {
+        CurrentInOrder: 1
+    },
+    Questions: [{
+        Text: "Human Capital Management"
+    }, {
+        Text: "Payroll"
+    }, {
+        Text: "Benefits"
+    }, {
+        Text: "Financials"
+    }]
+};
+
+test("A very simple test of no value", function () {
+    ok(1 == "1", "Test passed! (But we didn't test anything)");
+});
+
+test("Array should contain four items", function () {
+    equal(data.Questions.length, 4, "Pass! - array contains four items");
+});
+
+test("Does Array contain five items?", function () {
+    equal(data.Questions.length, 5, "Fail! - array does not contain five items");
+});
+
+
+ 
+Jasmine :
+----------------------------------------------------------------------------------------------------------------
+
+Install using node.js
+npm install --save-dev jasmine
+Initialize Jasmine for our project
+./node_modules/.bin/jasmine init
+
+HTML: 
+//no additional content required.
+JavaScript:
+
+var ourDataArray = {
+    ControlPanel: {
+    CurrentInOrder: 1
+    },
+    Questions: [{
+        Text: "Human Capital Management"
+    }, {
+        Text: "Payroll"
+    }, {
+        Text: "Benefits"
+    }, {
+        Text: "Financials"
+    }]
+};
+
+describe("Our data array", function() {
+  it("has four items?", function() {
+    expect(ourDataArray.Questions.length).toBe(4);
+  });
+});
+describe("Our data array", function() {
+  it("has five items?", function() {
+    expect(ourDataArray.Questions.length).toBe(5);
+  });
+});
+
+describe("Our data array", function() {
+  it("has two properties?", function() {
+    expect(Object.keys(ourDataArray).length).toBe(2);
+  });
+});
+
+
+
+Mocha :
+----------------------------------------------------------------------------------------------------------------
+
+npm install --global mocha
+
+npm install --save-dev mocha
+
+npm install chai
+
+HTML: 
+<div id="mocha"></div>
+
+JavaScript:
+
+
+var ourDataArray = {   
+    Questions: [{
+        Text: "Human Capital Management"
+    }, {
+        Text: "Payroll"
+    }, {
+        Text: "Benefits"
+    }, {
+        Text: "Financials"
+    }]
+};
+
+
+
+mocha.setup('bdd');
+
+var expect = chai.expect;
+
+describe('Matching Numbers', function() {
+	it('Matching zero as a number', function() {
+  	expect(0).to.equal(0);
+  });
+});
+
+describe('Array Length matching', function() {
+	it('has four items?', function() {
+  	expect(ourDataArray.Questions.length).to.equal(4);
+  });
+});
+
+describe('Array Length assertion', function() {
+	it('has five items?', function() {
+  	expect(ourDataArray.Questions.length).to.equal(5);
+  });
+});
+
+
+mocha.run();
+
+
+
+
+
+Karma :
+----------------------------------------------------------------------------------------------------------------
+
+
+npm install karma --save-dev
+
+npm install karma-jasmine karma-chrome-launcher jasmine-core --save-dev
+
+npm install -g karma-cli

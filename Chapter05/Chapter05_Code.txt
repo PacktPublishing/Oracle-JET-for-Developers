@@ -1,0 +1,828 @@
+﻿Steps involved in adding a component :
+----------------------------------------------------------------------------------------------------------------
+
+<div id="div5">
+          <label for="dateTime">Date and Time</label>
+          <input id="dateTime5"
+            data-bind= "ojComponent: {component: 'ojInputDateTime', value:
+          value}"/>
+           <br/>
+           <span class="oj-label">Date Time Selected:</span>
+           <span data-bind="text: value"></span>
+         </div>
+
+ 
+Steps involved in adding a component (2) :
+----------------------------------------------------------------------------------------------------------------
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/
+                 ojdatetimepicker'],
+        function (oj, ko, $)
+        {
+          function SimpleModel()
+          {
+            this.value = ko.observable(oj.IntlConverterUtils.dateToLocalIso(new
+                                       Date(2017, 10, 10)));
+          }
+          $(document).ready(function ()
+          {
+            ko.applyBindings(new SimpleModel(), document.getElementById('div5'));
+          });
+        });
+
+
+Input text :
+----------------------------------------------------------------------------------------------------------------
+HTML:
+
+<div id="divId">
+          <label for="text-input">First Name</label>
+          <input id="text-input" type="text" data-bind="ojComponent:
+           {component: 'ojInputText', value: firstName}"/> 
+          <br/>
+          <span class="oj-label">First Name value is: </span>
+          <span data-bind="text: firstName"></span>
+        </div>
+
+JavaScript:
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+                  'ojs/ojinputtext'], 
+         function (oj, ko, $)
+         { 
+           function SimpleModel()
+           {
+             this.firstName = ko.observable("Richard");
+           };
+           $(function ()
+           {
+             ko.applyBindings(new SimpleModel(), document.getElementById('divId'));
+           }); 
+         });
+
+
+Input password :
+----------------------------------------------------------------------------------------------------------------
+HTML:
+
+<div id="divId">
+          <label for="pwd">Password:</label>
+          <input type="password" id="pwd" data-bind="ojComponent: 
+           {component: 'ojInputPassword', value: secret}"/>
+          <br/><br/>
+          <span class="oj-label">Password value entered: </span>
+          <span data-bind="text: secret"></span>
+        </div>
+
+JavaScript:
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+                 'ojs/ojinputtext'], 
+        function (oj, ko, $)
+        { 
+          function SimpleModel()
+          {
+            this.secret = ko.observable("secret text");
+          };
+          $(function ()
+          {
+            ko.applyBindings(new SimpleModel(), document.getElementById('divId'));
+          }); 
+        });
+
+
+Text area :
+----------------------------------------------------------------------------------------------------------------
+HTML:
+
+  <div id="divId">
+          <label for="resizableDesc">Description:</label>
+          <textarea id="resizableDesc" style="resize: both;"
+           data-bind="ojComponent: {component: 'ojTextArea', 
+           value: desc}" ></textarea>
+          <br/><br/>
+          <span class="oj-label">Description value is:</span>
+          <span data-bind="text: desc"></span> 
+        </div>
+
+JavaScript:
+
+ require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+                 'ojs/ojinputtext'], 
+        function (oj, ko, $)
+        { 
+          function SimpleModel()
+          {
+            this.desc = ko.observable("longer description");
+          };
+          $(function ()
+          {
+            ko.applyBindings(new SimpleModel(), document.getElementById('divId'));
+          }); 
+        });
+
+Input number :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<form id="form1">
+	  <label for="age">Age:</label> 
+	  <input id="age" data-bind="ojComponent: {component: 'ojInputNumber',
+	   max:max, min:min, step:step, value:currentAge}"/>
+	  <br/> <hr/>
+	  <span>Age value is: </span>
+	  <span id="curr-value" data-bind="text: currentAge"></span>
+	</form>
+
+JavaScript:
+
+   require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+			'ojs/ojinputnumber'],
+   function(oj, ko, $)
+   {
+	 function InputNumberModel(){
+	   self = this;
+	   self.currentAge = ko.observable(30);
+	   self.max = ko.observable(100);
+	   self.min = ko.observable(0);
+	   self.step = ko.observable(1); 
+	 }
+	 var inputNumberModel = new InputNumberModel();
+	 $(function()
+	 {
+	   ko.applyBindings(inputNumberModel, 
+	   document.getElementById('form1'));
+	 });
+   });
+
+
+Input date :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<div id="divId">
+	  <label for="joiningDate">Joining Date:</label>
+	  <input id="joiningDate" data-bind="ojComponent: 
+	   {component: 'ojInputDate', value: doj}"/> 
+	  <br/><br/> 
+	  <span class="oj-label">Joining Date value is: </span>
+	  <span data-bind="text: doj"></span> 
+	</div>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+			 'ojs/ojdatetimepicker', 'ojs/ojselectcombobox', 
+			 'ojs/ojtimezonedata'], 
+	function (oj, ko, $)
+	{ 
+	  function SimpleModel()
+	  {
+		this.doj = ko.observable(oj.IntlConverterUtils.dateToLocalIso
+								 (new Date(2017, 10, 10)));
+	  }; 
+	  $(function ()
+	  {
+		ko.applyBindings(new SimpleModel(), document.getElementById('divId'));
+	  }); 
+	});
+
+
+Input time:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<div id="divId"> 
+	  <label for="eventTime">Event Time:</label>
+	  <input id="eventTime" data-bind="ojComponent: 
+	   {component: 'ojInputTime', value: eventTm }"/> 
+	  <br/><br/> 
+	  <span class="oj-label">Event Time value is:</span>
+	  <span data-bind="text: eventTm"></span> 
+	</div>
+
+JavaScript:
+
+   require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+			'ojs/ojdatetimepicker', 'ojs/ojselectcombobox', 
+			'ojs/ojtimezonedata'], 
+   function (oj, ko, $)
+   { 
+	 function SimpleModel()
+	 {
+	   this.eventTm = ko.observable(oj.IntlConverterUtils.dateToLocalIso
+									(new Date(2017, 10, 10, 5, 10)));
+	 }; 
+	 $(function ()
+	 {
+	   ko.applyBindings(new SimpleModel(), document.getElementById('divId'));
+	 }); 
+   });
+   
+   
+Input date time:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<div id="divId"> 
+	  <label for="birthDateTime">Birth Date Time:</label>
+	  <input id="birthDateTime" data-bind="ojComponent: {component:
+			 'ojInputDateTime', value: bdt}"/> 
+	  <br/><br/> 
+	  <span class="oj-label">Current component value is:</span>
+	  <span data-bind="text: bdt"></span> 
+	</div>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+			 'ojs/ojdatetimepicker', 'ojs/ojtimezonedata'], 
+	function (oj, ko, $)
+	{ 
+	  function SimpleModel()
+	  {
+		this.bdt = ko.observable(oj.IntlConverterUtils
+				 .dateToLocalIso(new Date(2017, 10, 10, 5, 10)));
+	  } 
+	  $(function ()
+	  {
+		ko.applyBindings(new SimpleModel(), 
+						 document.getElementById('divId'));
+	  }); 
+	});
+	
+Select:
+----------------------------------------------------------------------------------------------------------------
+
+    HTML (single select):
+
+        <form id="form1">
+          <label for="selectTransport">Mode of Transport: </label>
+          <select id="selectTransport" data-bind="ojComponent:
+           {component: 'ojSelect', value: selectedVal,
+            rootAttributes: {style:'max-width:20em'}}">
+            <option value="W">Walk</option>
+            <option value="B">Bicycle</option>
+            <option value="M">Motor Cycle</option>
+            <option value="C">Car</option>
+            <option value="P">Public Transport</option>
+          </select>
+          <div>
+            <br/> <hr/>
+            <label for="selectedTransport">Selected Transport value is </label>
+            <span id="selectedTransport" data-bind="text: ko.toJSON(selectedVal)"></span>
+          </div>
+        </form>
+
+    JavaScript (single select):
+
+        require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+                 'ojs/ojselectcombobox'],
+        function(oj, ko, $)
+        { 
+          $(function()
+          {
+            function ValueModel() {
+              this.selectedVal = ko.observableArray(["C"]);
+            }
+            ko.applyBindings(new ValueModel(), document.getElementById('form1'));
+          });
+        });
+
+Select (2):
+----------------------------------------------------------------------------------------------------------------
+
+HTML (multi select):
+
+	<form id="form1">
+	  <label for="selectTransport">Mode of Transport: </label>
+	  <select id="selectTransport" data-bind="ojComponent: 
+	   {component: 'ojSelect', value: selectedVal, multiple:true,
+		rootAttributes: {style:'max-width:20em'}}"> 
+		<option value="Walk">Walk</option>
+		<option value="Bicycle">Bicycle</option>
+		<option value="Motor Cycle">Motor Cycle</option>
+		<option value="Car">Car</option>
+		<option value="Public Transport">Public Transport</option>
+	  </select>
+	  <div>
+		<br/> <hr/>
+		<label for="selectedTransport">Selected Transport value is </label>
+		<span id="selectedTransport" data-bind="text: ko.toJSON(selectedVal)"></span>
+	  </div>
+	</form>
+
+JavaScript (multi select):
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+			 'ojs/ojselectcombobox'],
+	function(oj, ko, $)
+	{ 
+	  $(function()
+	  {
+		function ValueModel() {
+		  this.selectedVal = ko.observableArray(["Bicycle","Car"]);
+		}
+		ko.applyBindings(new ValueModel(), document.getElementById('form1'))
+	  });
+	});
+
+Combo box:
+----------------------------------------------------------------------------------------------------------------
+
+HTML (single combo box):
+
+	<form id="form1">
+	  <label for="selectTransport">Mode of Transport: </label>
+	  <select id="selectTransport" data-bind="ojComponent:
+	   {component: 'ojCombobox', value: selectedVal,
+		rootAttributes: {style:'max-width:20em'}}">
+		<option>Walk</option>
+		<option>Bicycle</option>
+		<option>Motor Cycle</option>
+		<option>Car</option>
+		<option>Public Transport</option>
+	  </select>
+	  <div>
+		<br/> <hr/>
+		<label for="selectedTransport">Selected Transport value is </label>
+		<span id="selectedTransport" data-bind="text: ko.toJSON(selectedVal)"></span>
+	  </div>
+	</form>
+
+JavaScript (single combo box):
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+			 'ojs/ojselectcombobox'],
+	function(oj, ko, $)
+	{ 
+	  $(function()
+	  {
+		function ValueModel() {
+		  this.selectedVal = ko.observableArray(["Bicycle"]);
+		}
+		ko.applyBindings(new ValueModel(),
+						 document.getElementById('form1'));
+	  });
+	});
+
+Combo box (2):
+----------------------------------------------------------------------------------------------------------------
+
+HTML (multi combo box):
+
+	<form id="form1">
+	  <label for="selectTransport">Mode of Transport: </label>
+	  <select id="selectTransport" data-bind="ojComponent:
+	   {component: 'ojCombobox', value: selectedVal, multiple:true,
+		rootAttributes: {style:'max-width:20em'}}">
+		<option >Walk</option>
+		<option >Bicycle</option>
+		<option >Motor Cycle</option>
+		<option >Car</option>
+		<option >Public Transport</option>
+	  </select>
+	  <div>
+		<br/><br/> <hr/><br/><br/>
+		<label for="selectedTransport">Selected Transport value is </label>
+		<span id="selectedTransport" data-bind="text: ko.toJSON(selectedVal)"></span>
+	  </div>
+	</form>
+
+JavaScript (multi combo box):
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+			 'ojs/ojselectcombobox'],
+	function(oj, ko, $)
+	{ 
+	  $(function()
+	  {
+		function ValueModel() {
+		  this.selectedVal = ko.observableArray(["Bicycle","Car"]);
+		}
+		ko.applyBindings(new ValueModel(), document.getElementById('form1'));
+	  });
+	});
+
+Check box set:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<form id="formId" class="oj-form">
+	  <label id="applyChanges">Apply Changes? </label>
+	  <div id="checkboxSetApplyChanges" aria-labelledby = "applyChanges"
+	   data-bind="ojComponent: { component: 'ojCheckboxset',
+	   value: applyChg, required:true}" >
+		<!-- oj-choice-item is required for the component to work -->
+		<span class="oj-choice-item">
+		  <input id="applyId" type="checkbox" value="apply">
+		  <label for="applyId">Apply</label>
+		</span>
+	</div>
+	<br/>
+	<span>Apply Changes value is: </span>
+	<span id="curr-value" data-bind="text: applyChg"></span>
+	<br/> 
+	<br/>
+	<br/>
+	<label id="mainlabelid">Browsers</label>
+	<!-- You need to set the aria-labelledby attribute 
+	 to make this accessible.
+	 role="group" is set for you by ojCheckboxset. -->
+	<div id="checkboxSetId" aria-labelledby="mainlabelid"
+	 data-bind="ojComponent: { component: 'ojCheckboxset', 
+							   value: currentBrowser}" >
+	  <!-- oj-choice-item is required for the component to work -->
+	  <span class="oj-choice-item">
+		<input id="ieopt" type="checkbox" value="Internet Explorer">
+		<label for="ieopt">Internet Explorer</label>
+	  </span>
+	  <span class="oj-choice-item">
+		<input id="chromeopt" type="checkbox" value="Chrome">
+		<label for="chromeopt">Chrome</label>
+	  </span>
+	  <span class="oj-choice-item">
+		<input id="firefoxopt" type="checkbox" value="Firefox">
+		<label for="firefoxopt">Firefox</label>
+	  </span> 
+	  <span class="oj-choice-item">
+		<input id="operaopt" type="checkbox" value="Opera">
+		<label for="Operaopt">Opera</label>
+	  </span>
+	</div>
+	<br/>
+	<span>Current Browser value is: </span>
+	<span id="curr-value" data-bind="text: currentBrowser"></span>
+	<br/>
+	<br/>
+	<div id='buttons-container'>
+	  <a href="description.html"></a>
+	  <input id="inputButton3" type="button"
+	   data-bind=" click: setModelCurrentBrowser,
+	   ojComponent: {component: 'ojButton', 
+	   label: 'Set currentBrowser to Chrome, Opera'}"/><br/>
+	</div>
+	</form>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+			 'ojs/ojbutton', 'ojs/ojcheckboxset'],
+	function(oj, ko, $)
+	{
+	  function checkboxsetModel()
+	  {
+		var self = this;
+		// this variable keeps track of the currentBrowser. 
+		// It's a Knockout observable which means it is a two-way binding.
+		self.currentBrowser = ko.observableArray(["Firefox"]);
+		self.applyChg = ko.observableArray(); 
+		self.setModelCurrentBrowser = function() {
+		  self.currentBrowser(["Chrome", "Opera"]);
+		  return true;
+		}
+	  }
+	  var vm = new checkboxsetModel();
+	  $(function()
+	  {
+		ko.applyBindings(vm, document.getElementById('formId'));
+	  });
+	});
+
+
+Radio set:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<form id="formId" class="oj-form">
+	  <label id="mainlabelid">Browsers</label>
+	  <!-- You need to set the aria-labelledby attribute
+	   to make this accessible.
+	   role="radiogroup" is set for you by ojRadioset. -->
+	  <div id="radiosetBasicDemoId" aria-labelledby="mainlabelid"
+	   data-bind="ojComponent: {
+		 component: 'ojRadioset', 
+		 value: currentBrowser}" > 
+		<!-- oj-choice-item is required for the component to work -->
+		<span class="oj-choice-item">
+		  <input id="ieopt" type="radio" name="icf" value="Internet Explorer">
+		  <label for="ieopt">Internet Explorer</label>
+		</span> 
+		<span class="oj-choice-item">
+		  <input id="chromeopt" type="radio" name="icf" value="Chrome">
+		  <label for="chromeopt">Chrome</label>
+		</span>
+		<span class="oj-choice-item">
+		  <input id="firefoxopt" type="radio" name="icf" value="Firefox">
+		  <label for="firefoxopt">Firefox</label>
+		</span> 
+		<span class="oj-choice-item">
+		  <input id="operaopt" type="radio" name="icf" value="Opera">
+		  <label for="operaopt">Opera</label>
+		</span> 
+	  </div>
+	  <br/>
+	  <span>Current browser value is: </span>
+	  <span id="curr-value" data-bind="text: currentBrowser"></span>
+	  <br/>
+	  <br/>
+	  <div id='buttons-container'>
+		<input id="inputButton4" type="button"
+		 data-bind="click: setModelCurrentBrowser,
+		 ojComponent: {
+		   component: 'ojButton', 
+		   label: 'Set model currentBrowser to chrome'}"/><br/>
+	  </div>
+	</form>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 
+			 'ojs/ojradioset', 'ojs/ojbutton'],
+	function(oj, ko, $)
+	{
+	  function radiosetModel()
+	  {
+		var self = this;
+		// this variable keeps track of the currentBrowser. 
+		// It's a Knockout observable which means it is a two-way binding.
+		self.currentBrowser = ko.observable("Firefox"); 
+		self.setModelCurrentBrowser = function() {
+		  alert("Set model currentBrowser to Chrome.");
+		  self.currentBrowser("Chrome");
+		  return true;
+		}
+	  }
+	  var vm = new radiosetModel();
+	  $(function()
+	  {
+		ko.applyBindings(vm, document.getElementById('formId'));
+	  });
+	});
+
+Switch:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+   <form id="formId">
+	 <label id="switchLabel" for="status">Employment Status</label>
+	 <input id="status" data-bind="ojComponent: {component:
+	  'ojSwitch', value: isChecked}"/>
+	 <br/><br/>
+	 <span> Employment Status is </span>
+	 <span data-bind="text: ((isChecked()) ? 'Active' : 'Inactive')"></span>
+	</form>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+			 'ojs/ojswitch'],
+	function(oj, ko, $)
+	{
+	  function SwitchModel(){
+		this.isChecked = ko.observable();
+	  }
+	  var switchModel = new SwitchModel();
+	  $(function()
+	  {
+		ko.applyBindings(switchModel, 
+		   document.getElementById('formId'));
+	  });
+	});
+	
+Form controls:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<div id="form-container"> 
+	  <div>
+		<h5>Set State</h5>
+		<div class="oj-buttonset-width-auto"
+		 data-bind="ojComponent: { component: 'ojButtonset',
+								   checked: formState}">
+		  <label for="enabled">Enabled</label>
+		  <input type="radio" name="formstate" value="enabled"
+		   id="enabled" data-bind="ojComponent: { component: 
+												 'ojButton'}"/>
+		  <label for="disabled">Disabled</label>
+		  <input type="radio" name="formstate" value="disabled"
+		   id="disabled" data-bind="ojComponent: { component:
+												  'ojButton'}"/>
+		  <label for="readonly">Read Only*</label>
+		  <input type="radio" name="formstate" value="readonly"
+		   id="readonly" data-bind="ojComponent: { component: 
+												  'ojButton'}"/>
+		</div> 
+		<p class="oj-text-sm oj-margin-lg-bottom">* 
+		 readonly not supported on radio, checkbox, combobox,
+		 select, slider, input search, color palette, or
+		 color spectrum</p>
+	  </div>
+	  <div class="oj-form-layout">
+		<div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 
+		 oj-md-labels-inline" >
+		  <div class="oj-flex">
+			<div class="oj-flex-item">
+			  <label for="inputcontrol">First Name:</label>
+			</div>
+			<div class="oj-flex-item">
+			  <input id="inputcontrol"
+			   placeholder="placeholder text"
+			   data-bind="ojComponent: {
+				 component: 'ojInputText', 
+				 value: placeholder()? null : 'John', 
+				 messagesCustom: messages,
+				 disabled: disableFormControls,
+				 readOnly: readonlyFormControls}">
+			</div>
+		  </div> 
+		  <div class="oj-flex">
+			<div class="oj-flex-item">
+			  <label for="spinnercontrol">input number</label>
+			</div>
+			<div class="oj-flex-item">
+			  <input id="spinnercontrol"
+			   placeholder="placeholder text"
+			   data-bind="ojComponent: {
+				 component: 'ojInputNumber',
+				 messagesCustom: messages,
+				 value: placeholder()? null : 20, 
+				 max:100, min:0, step:10,
+				 disabled: disableFormControls,
+				 readOnly: readonlyFormControls}"/>
+			</div>
+		  </div>
+		  <div class="oj-flex">
+			<div class="oj-flex-item">
+			  <label for="datetimepickercontrol">input datetime
+			  </label>
+			</div>
+			<div class="oj-flex-item">
+			  <input id="datetimepickercontrol"
+			   placeholder="placeholder text"
+			   data-bind="ojComponent: {
+				 component: 'ojInputDateTime',
+				 messagesCustom: messages, 
+				 value: placeholder()? null : 
+				 oj.IntlConverterUtils.dateToLocalIso(new Date()),
+				 disabled: disableFormControls,
+				 readOnly: readonlyFormControls}">
+			</div>
+		  </div>
+		</div>
+	  </div> 
+	</div>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery',
+		'ojs/ojknockout', 'ojs/ojinputtext', 'ojs/ojinputnumber', 
+		'ojs/ojdatetimepicker'],
+	function(oj, ko, $)
+	{
+	  function StateModel() {
+		var self = this;
+		self.formState = ko.observable('enabled');
+		self.placeholder = ko.observable(false);
+		self.disableFormControls = ko.computed(function () {
+		  if (self.formState() == 'disabled')
+			return true;
+		  else
+			return false;
+		});
+		self.readonlyFormControls = ko.computed(function () {
+		  if (self.formState() == 'readonly')
+			return true;
+		  else
+			return false;
+		});
+		self.messages = ko.observableArray([]); 
+	  }
+	  $(function()
+	  {
+		ko.applyBindings(new StateModel(),
+		   document.getElementById('form-container'));
+	  });
+	});
+
+Data collections:
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+	<div id="pagingControlDemo">
+	  <table id="table" summary="Cities List"
+	   aria-label="Cities Table"
+	   data-bind="ojComponent: {component: 'ojTable', 
+		 data: pagingDatasource, columns: [
+		   {headerText: 'Country', field: 'country'},
+		   {headerText: 'City Name', field: 'name'},
+		   {headerText: 'Lattitude', field: 'lat'},
+		   {headerText: 'Longitude', field: 'lng'}], 
+		 rootAttributes: {'style':'width: 100%;'}}">
+	  </table>
+	  <div id="paging" data-bind="ojComponent: {
+	   component: 'ojPagingControl', data: pagingDatasource,
+	   pageSize: 10}">
+	  </div>
+	</div>
+
+JavaScript:
+
+	require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+	  'ojs/ojtable', 'ojs/ojpagingcontrol', 
+	  'ojs/ojpagingtabledatasource', 'ojs/ojarraytabledatasource'],
+	  function(oj, ko, $)
+	  {
+		function viewModel()
+		{
+		  var self = this;
+		  var citiesArray = [
+			{ "country": "AD", "name": "Pas de la Casa",
+			  "lat": "42.54277", "lng": "1.73361" },
+			{ "country": "AD", "name": "Ordino", "lat": "42.55623",
+			  "lng": "1.53319" },
+			{ "country": "AD", "name": "les Escaldes", 
+			  "lat": "42.50729", "lng": "1.53414" },
+			{ "country": "AD", "name": "la Massana",
+			  "lat": "42.54499", "lng": "1.51483" },
+			{ "country": "AD", "name": "Encamp", "lat": "42.53474",
+			  "lng": "1.58014" },
+			{ "country": "AD", "name": "Canillo", "lat": "42.5676",
+			  "lng": "1.59756" },
+			{ "country": "AE", "name": "Umm al Qaywayn",
+			  "lat": "25.56473", "lng": "55.55517" },
+			{ "country": "AE", "name": "Ras al-Khaimah",
+			  "lat": "25.78953", "lng": "55.9432" },
+			{ "country": "AE", "name": "Muzayri‘",
+			  "lat": "23.14355", "lng": "53.7881" },
+			{ "country": "AE", "name": "Khawr Fakkān",
+			  "lat": "25.33132", "lng": "56.34199" },
+			{ "country": "US", "name": "Greensboro",
+			  "lat": "32.70415", "lng": "-87.5955" },
+			{ "country": "US", "name": "Greenville",
+			  "lat": "31.8296", "lng": "-86.61775" },
+			{ "country": "US", "name": "Grove Hill", 
+			  "lat": "31.70877", "lng": "-87.77722" },
+			{ "country": "US", "name": "Guin", "lat": "33.96566",
+			  "lng": "-87.91475" },
+			{ "country": "US", "name": "Gulf Shores", 
+			  "lat": "30.24604", "lng": "-87.70082" },
+			{ "country": "US", "name": "Guntersville", 
+			  "lat": "34.35823", "lng": "-86.29446" },
+			{ "country": "US", "name": "Hackleburg", 
+			  "lat": "34.27732", "lng": "-87.82864" },
+			{ "country": "US", "name": "Haleyville", 
+			  "lat": "34.22649", "lng": "-87.62141" },
+			{ "country": "US", "name": "Hamilton",
+			  "lat": "34.14232", "lng": "-87.98864" },
+			{ "country": "US", "name": "Hanceville", 
+			  "lat": "34.06065", "lng": "-86.7675" },
+			{ "country": "US", "name": "Harpersville", 
+			  "lat": "33.344", "lng": "-86.43804" },
+			{ "country": "US", "name": "West Warrenton", 
+			  "lat": "33.41217", "lng": "-82.67517" },
+			{ "country": "US", "name": "Johnston", 
+			  "lat": "41.82186", "lng": "-71.50675" },
+			{ "country": "US", "name": "Hill Air Force Base",
+			  "lat": "41.11118", "lng": "-111.97712" },
+			{ "country": "US", "name": "Elmendorf Air Force Base",
+			  "lat": "61.25703", "lng": "-149.63139" },
+			{ "country": "US", "name": "Hot Springs National 
+			  Park", "lat": "34.5317", "lng": "-93.06377" },
+			{ "country": "US", "name": "Dixiana", 
+			  "lat": "33.74021", "lng": "-86.64938" },
+			{ "country": "US", "name": "Shoal Creek",
+			  "lat": "33.43076", "lng": "-86.61092" },
+			{ "country": "ZW", "name": "Binga", 
+			  "lat": "-17.62027", "lng": "27.34139" },
+			{ "country": "ZW", "name": "Bindura", 
+			  "lat": "-17.30192", "lng": "31.33056" },
+			{ "country": "ZW", "name": "Beitbridge", 
+			  "lat": "-22.21667", "lng": "30" },
+			{ "country": "ZW", "name": "Beatrice", 
+			  "lat": "-18.25283", "lng": "30.8473" },
+			{ "country": "ZW", "name": "Banket", 
+			  "lat": "-17.38333", "lng": "30.4" },
+			{ "country": "ZW", "name": "Epworth", "lat": "-17.89",
+			  "lng": "31.1475" } 
+		  ];
+		  self.pagingDatasource = new oj.PagingTableDataSource
+				 (new oj.ArrayTableDataSource(citiesArray, 
+					  {idAttribute: 'name'}));
+		}
+		var vm = new viewModel;
+		$(document).ready(function()
+		{
+		  ko.applyBindings(vm, document
+			.getElementById('pagingControlDemo'));
+		});
+	  });

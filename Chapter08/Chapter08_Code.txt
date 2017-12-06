@@ -1,0 +1,53 @@
+﻿Cordova :
+----------------------------------------------------------------------------------------------------------------
+
+npm install -g cordova
+
+cordova create hybrid com.mobile.hybrid HybridProject
+
+cordova platform add ios
+
+cordova platform add android
+
+cordova build
+
+cordova build ios
+
+cordova emulate android
+
+cordova run android
+
+ 
+Hybrid mobile application development :
+----------------------------------------------------------------------------------------------------------------
+
+yo oraclejet:hybrid [directory] [--appId=reverse-domain-style-identifier] [--appName=application-display-title] [--template={template-name|template-url}] [--platforms=android,ios]
+
+
+Build and Serve the application with Grunt :
+----------------------------------------------------------------------------------------------------------------
+
+grunt build --platform={android|ios} [--buildConfig=path/buildConfig.json]
+
+grunt serve --platform=ios|android [--web=true --serverPort=server-port-number --livereloadPort=live-reload-port-number --destination=emulator-name|device --disableLiveReload=true]
+
+
+
+
+Importing FixItFast application :
+----------------------------------------------------------------------------------------------------------------
+
+npm -g install @oracle/ojet-cli
+
+ojet create FixItFast --template=http://www.oracle.com/webfolder/technetwork/jet/public_samples/FixItFast.zip
+
+
+
+Packaging mobile application
+----------------------------------------------------------------------------------------------------------------
+
+grunt build:release --platform={ios|android}
+
+grunt build:release --platform={ios|android} --buildConfig=path/buildConfig.json
+
+grunt serve:release --platform=ios|android [--web=true --serverPort=server-port-number --livereloadPort=live-reload-port-number --destination=emulator-name|device] --buildConfig==path/buildConfig.json

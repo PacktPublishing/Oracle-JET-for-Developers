@@ -1,0 +1,590 @@
+﻿Application Routing :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+  <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+	<div id="routing-container">
+	  <oj-toolbar id='buttons-container'>
+		<oj-buttonset-one class="oj-buttonset-width-auto" value="{{router.stateId}}" focus-management="none">
+		  <!-- ko foreach: router.states -->
+		  <oj-option value="[[id]]">
+			<span data-bind="text: label"></span>
+		  </oj-option>
+		  <!-- /ko -->
+		</oj-buttonset-one>
+	  </oj-toolbar>
+	  <hr/>
+	  <div id="pageContent" class="oj-panel oj-panel-alt2"
+		   style="width: 200px">
+		<h3 data-bind="text: router.currentValue"></h3>
+	  </div>
+	</div>
+  </div>
+</div>
+
+JavaScript:
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout',
+	 'ojs/ojtoolbar', 'ojs/ojbutton', 'ojs/ojrouter'],
+function(oj, ko, $)
+{ 
+var base = document.getElementsByTagName('base')[0].getAttribute('href');
+oj.Router.defaults['baseUrl'] = base;
+// Retrieve the router static instance and configure the states
+var router = oj.Router.rootInstance;
+router.configure(
+{
+'homepage': { label: 'Home', value: 'This is the Home Page.',
+		   isDefault: true },
+'page1': { label: 'Page 1', value: 'This is the Page 1.' },
+'page2': { label: 'Page 2', value: 'This is the Page 2.' },
+'page3': { label: 'Page 3', value: 'This is the Page 3.' }
+});
+var viewModel =
+{
+router: router
+};
+$(function()
+{
+ko.applyBindings(viewModel,
+				 document.getElementById('routing-container'));
+oj.Router.sync();
+});
+});  
+
+ 
+Component Validations :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+  <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+	<div id="validation-usecase" class="oj-form oj-md-odd-cols-4 oj-md-labels-inline oj-sm-odd-cols-12">
+	  <div class="oj-flex">
+		<div class="oj-flex-item">
+		  <oj-label for="username" show-required>User Name</oj-label>
+	  60; </div>
+		<div class="oj-flex-item">
+		//input text component with validation attributes
+		  <oj-input-text id="username" autocomplete="off" required
+			validators="[[validators]]"
+			on-value-changed="[[valueChangedListener]]"
+			name="username" value="{{userName}}"
+			placeholder="Enter at least 3 alphanumeric characters">
+		  </oj-input-text>
+		  <span id="status" title="Initial isValid Flag" role="img"
+				class="oj-fwk-icon-status-error oj-fwk-icon"
+				data-bind="style: {display: userNameIsNotValid() ? 'inline-block': 'none'}">
+		  </span>
+		</div>
+	  </div>
+	  <div class="oj-flex">
+		<div class="oj-flex-item">
+		  <oj-label for="password" show-required>Password</oj-label>
+		</div>
+		<div class="oj-flex-item">
+		// password component with vaidation attribute
+		  <oj-input-password id="password" autocomplete="off" required
+			validators="[[validators2]]"
+			name="password"
+			value="{{password}}"
+			on-value-changed="[[valueChangedListener]]"
+			help.instruction="Enter at least 6 characters including a number, one uppercase and lowercase letter">
+		  </oj-input-password>
+		  <span id="pwdstatus" title="Deferred Error" role="img"
+				class="oj-fwk-icon-status-error oj-fwk-icon"
+				data-bind="style: {display: passwordIsNotValid() ? 'inline-block': 'none'}">
+		  </span>
+		</div>
+	  </div>
+	  <div class="oj-flex">
+		<div class="oj-flex-item"></div>
+		<div class="oj-flex-item">
+		  <oj-button id="showMsgsBtn"
+			data-bind="click: showMessages">Submit</oj-button>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+
+JavaScript:
+
+require(['ojL10n!nls/MessageBundle', 'ojs/ojcore', 'knockout', 'jquery',
+	'ojs/ojknockout','ojs/ojinputtext', 'ojs/ojbutton', 'ojs/ojlabel'],
+function (bundle, oj, ko, $)
+// this callback gets executed when all required modules for validation are loaded
+{
+  function DemoViewModel()
+  {
+	var self = this;
+	self.tracker = ko.observable();
+	// for username field
+	self.userName = ko.observable();
+	self.userNameIsNotValid = ko.observable(false);
+	// for password field
+	self.password = ko.observable();
+	self.passwordIsNotValid = ko.observable(false);
+	self.validators = ko.computed(function()
+	{
+	  return [{
+		type: 'regExp',
+		options: {
+		  pattern: '[a-zA-Z0-9]{3,}',
+		  messageDetail: 'You must enter at least 3 letters or numbers'}}];
+	});
+	self.validators2 = ko.computed(function()
+	{
+	  return [{
+		type: 'regExp',
+		options : {
+		  pattern: '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}',
+		  label: 'Password',
+		  messageSummary : '\'{label}\' too Weak',
+		  messageDetail:
+			'You must enter a password that meets our minimum security requirements.'}}];
+	});
+	self.valueChangedListener = function(event)
+	{
+	  var id = event.currentTarget.id;
+	  if (id === "username")
+	  {
+		self.userNameIsNotValid(false);
+	  }
+	  else
+	  {
+		self.passwordIsNotValid(false);
+	  }
+	};
+	// Calls showMessages method on each component
+	self.showMessages = function ()
+	{
+	  var element1 = document.getElementById("username");
+	  var element2 = document.getElementById("password");
+	  element1.showMessages();
+	  element2.showMessages();
+	  self.userNameIsNotValid(
+		!(element1.validate()));
+	  self.passwordIsNotValid(
+		!(element2.validate()));
+	}
+  };
+  $(
+	function()
+	{
+	  $("#showMsgsBtn").on('click', function () {
+		  document.getElementById('username').showMessages();
+		  document.getElementById('password').showMessages();
+	  });
+	  ko.applyBindings(new DemoViewModel(),
+		document.getElementById('validation-usecase'));
+	}
+  );
+		});
+
+
+Application Level Validations :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+  <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+	<div id="componentDemo">
+	  <div id="crossfield-example"
+		class="oj-form oj-md-odd-cols-4 oj-md-labels-inline oj-sm-odd-cols-12">
+		<hr>
+		<h1>User Registration</h1>
+		<hr>
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-label id="brblabel">Validate By</oj-label> 
+		  </div>
+		  <div class="oj-flex-item">
+			<oj-radioset id="radioSetId" labelled-by="brblabel" value='{{contactPref}}'>
+			  <oj-option id="opt1" value="email">Email</oj-option>
+			  <oj-option id="opt2" value="phone">Phone</oj-option>
+			</oj-radioset>
+		  </div>
+		</div>
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-label for="emailId">Email Address</oj-label>
+		  </div>
+		  <div class="oj-flex-item">
+			<oj-input-text id="emailId" type="email" name="emailId"
+			  placeholder="john_doe@example.com" value="{{emailAddress}}"
+			  messages-custom="{{emailAddressMessages}}"
+			  disabled="[[contactPref() !== 'email']]"></oj-input-text>
+		  </div>
+		</div>
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-label for="telNum">Phone Number</oj-label>
+		  </div>
+		  <div class="oj-flex-item">
+			<oj-input-text id="telNum" name="telNum"
+			  help.instruction="US phone number"
+			  placeholder="ten digit phone number" value="{{phoneNumber}}"
+			  messages-custom="{{phoneNumberMessages}}"
+			  disabled="[[contactPref() !== 'phone']]" validators="[[validators]]"></oj-input-text>
+		  </div>
+		</div>
+		<hr>
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-button id="create" disabled="[[shouldDisableCreate]]"
+			  on-click="[[createNewMember]]" >Submit</oj-button>
+		  </div>
+		</div>
+	  </div> 
+	</div> 
+  </div>
+</div>
+
+JavaScript:
+
+require(['ojL10n!nls/MessageBundle', 'ojs/ojcore', 'knockout', 
+  'jquery', 'ojs/ojradioset', 'ojs/ojinputtext',
+  'ojs/ojbutton', 'ojs/ojlabel'],
+function (bundle, oj, ko, $)
+{
+  function CrossFieldValidator(options)
+  {
+	this._options = options;
+  }
+  ;
+  CrossFieldValidator.prototype.validate = function (valueOnDependent)
+  {
+	var summary, detail, params, validatorOptions = this._options;
+	if (validatorOptions)
+	{
+	  var baseObs = validatorOptions['base'];
+	  if (baseObs)
+	  {
+		var baseValue = ko.utils.unwrapObservable(baseObs);
+		var triggerValue = validatorOptions['baseTriggerValue'];
+		if ((triggerValue && baseValue &&
+		triggerValue === baseValue) && !valueOnDependent)
+		{
+		  params = {'label': validatorOptions['label']};
+		  summary = oj.Translations.applyParameters(
+		  bundle['app']['validator-crossField']['summary'], params);
+		  detail = oj.Translations.applyParameters(
+		  bundle['app']['validator-crossField']['detail'], params);
+		  throw new oj.ValidatorError(summary, detail);
+		}
+	  }
+	}
+	return true;
+  };
+  function MemberViewModel()
+  {
+	var self = this;
+	// for invalidComponentTracker attribute
+	self.tracker = ko.observable();
+	var formElements = [document.getElementById("emailId"),
+						document.getElementById("telNum")];
+	var ContactPref = {'EMAIL': 'email', 'PHONE': 'phone'};
+	self.contactPref = ko.observable(ContactPref['EMAIL']);
+	self.validators = ko.computed(function()
+	{
+	  return [{type: 'regExp', options : {
+			  pattern: '\\d{10}',
+			  hint: 'enter a ten digit phone number including \n\
+			  area code with no spaces or special characters',
+			  messageSummary: 'Value \'{value}\' Invalid',
+			  messageDetail: 'You must enter a 10 digit phone \n\
+			  number starting with area code.'}}];
+	});
+	// emailAddress must be set when contact pref is 'email'
+	self.emailAddrCRValidator = new CrossFieldValidator({
+	  base: self.contactPref,
+	  baseTriggerValue: ContactPref['EMAIL'],
+	  label: 'Email Address'});
+	self.emailAddress = ko.observable();
+	self.emailAddressMessages = ko.observableArray([]);
+	// phoneNumber must have a value when the contactPref is 'phone'
+	self.phoneNumCRValidator = new CrossFieldValidator({
+	  base: self.contactPref,
+	  baseTriggerValue: ContactPref['PHONE'],
+	  label: 'Phone Number'});
+	self.phoneNumber = ko.observable();
+	self.phoneNumberMessages = ko.observableArray([]);
+	var clearMessagesOnDependentsOfContactPref = function (newValue) {
+	  if (newValue === ContactPref['EMAIL'] || newValue === ContactPref['PHONE'])
+	  {
+		self.phoneNumberMessages([]);
+		self.emailAddressMessages([]);
+	  } 
+	};
+	self.contactPref.subscribe(clearMessagesOnDependentsOfContactPref);
+	 self.shouldDisableCreate = ko.observable(false);
+	self.createNewMember = function (event)
+	{
+	  // Step 1
+	  self._showComponentValidationErrors()
+	  .then(function(values) {
+		for (var j=0; j < values.length; j++)
+		{
+		  if (values[j] === "invalid") {
+			return;
+		  }
+		}
+		// Step 2
+		if (!self._runAppLevelValidation())
+		  return;
+	  });
+	};
+	  self._showComponentValidationErrors = function ()
+	{
+	  var length = formElements.length;
+	  var promises = [];
+	  for (var i=0; i< length; i++)
+	  {
+		// don't push disabled components to be validated.
+		if (!formElements[i].disabled)
+		  // validate will show messages, if any
+		  promises.push(formElements[i].validate());
+	  }
+	  return Promise.all(promises);
+	};
+	self._runAppLevelValidation = function ()
+	{
+	  var valid = true;
+	  valid = (this._validateObservable(this.emailAddress,
+	  this.emailAddrCRValidator,
+	  this.emailAddressMessages) &&
+	  this._validateObservable(this.phoneNumber,
+	  this.phoneNumCRValidator,
+	  this.phoneNumberMessages));
+	  if (!valid)
+	  {
+		return false;
+	  }
+	  return true;
+	};
+	self._validateObservable = function (obs, validator, messages)
+	{
+	  var message, valid = true, msgs = [];
+	  try
+	  {
+		// clear all messages before validating property
+		messages([]);
+		validator.validate(ko.utils.unwrapObservable(obs));
+	  } catch (e)
+	  {
+		if (e instanceof oj.ValidatorError)
+		{
+		  message = e.getMessage();
+		} else
+		{
+		  var summary =
+		  e.message ? e.message : bundle['app']['validation-failed'];
+		  message = {summary:summary, detail:"", severity: oj.Message.SEVERITY_LEVEL.ERROR};
+		}
+		valid = false;
+		msgs.push(message);
+		messages(msgs);
+	  }
+	  return valid;
+	};
+  } ;
+  $(
+  function ()
+  {
+	ko.applyBindings(new MemberViewModel(),
+	  document.getElementById('crossfield-example'));
+  });
+});
+
+
+Converters :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+  <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+	<div id="datetime-converter-example">
+	  <h3 class="oj-header-border">Date and Time</h3>
+	  <p>Converts between locale specific date and time string and Date value. </p>
+	   <div class="oj-form oj-md-odd-cols-4 oj-md-labels-inline"> 
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-label for="datetime2">input datetime</oj-label>
+		  </div>
+		  <div class="oj-flex-item">
+			//date time component with converter attribute
+			<oj-input-date-time id="datetime2" value="{{datetime}}" name="datetime2"
+			  help.instruction="enter a date in your preferred format and we will attempt to figure it out"
+			  converter= '{
+				  "type":"datetime",
+				  "options": {"formatType": "datetime", "dateFormat": "short"}}'> </oj-input-date-time>
+		  </div>
+		</div>
+		<div class="oj-flex">
+		  <div class="oj-flex-item">
+			<oj-label for="text20">input text</oj-label>
+		  </div>
+		  <div class="oj-flex-item">
+			//input text component with datetime converter
+			<oj-input-text id="text20" value="{{datetime}}" name="text20"
+			  help.instruction="enter a date in your preferred format and we will attempt to figure it out"
+			  converter= '{
+				  "type":"datetime",
+				  "options": {"formatType": "datetime", "dateFormat": "short", "timeFormat": "short"}}'>
+			</oj-input-text>
+		  </div>
+		</div>
+	  </div>
+	</div> 
+  </div>
+</div>
+
+JavaScript:
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojdatetimepicker', 'ojs/ojlabel'],
+function(oj, ko, $)
+{
+function MemberViewModel()
+{
+  var self = this;
+  self.date = ko.observable();
+  self.datetime = ko.observable();
+  self.time = ko.observable();
+};
+$(
+  function()
+  {
+	ko.applyBindings(new MemberViewModel(),
+	  document.getElementById('datetime-converter-example')); 
+  }
+);
+});
+
+
+Responsiveness :
+----------------------------------------------------------------------------------------------------------------
+
+HTML:
+
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+<div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+<div id="form-container">
+
+<p>Demo width in <span class="demo-screen-range"></span> screen range.</p>
+<div class="oj-form-layout">
+// input form components with style classes for layout
+<div class="oj-form oj-sm-odd-cols-12 oj-lg-odd-cols-4 oj-lg-labels-inline
+oj-form-cols oj-form-cols-max2" >
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label show-required for="inputcontrol">input 1</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol" required value="text"></oj-input-text>
+</div>
+</div>
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="textareacontrol">textarea</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-text-area id="textareacontrol" value='text' rows="6"></oj-text-area>
+</div>
+</div>
+
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="inputcontrol2">input 2</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol2" value="text"></oj-input-text>
+</div>
+</div>
+
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="inputcontrol3">input 3 longer label</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol3" value="text"></oj-input-text>
+</div>
+</div>
+
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="inputcontrol4">input 4</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol4" value="text"></oj-input-text>
+</div>
+</div>
+
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="inputcontrol5">input 5</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol5" value="text"></oj-input-text>
+</div>
+</div>
+
+<div class="oj-flex">
+<div class="oj-flex-item">
+<oj-label for="inputcontrol6">input 6</oj-label>
+</div>
+<div class="oj-flex-item">
+<oj-input-text id="inputcontrol6" value="text"></oj-input-text>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+JavaScript:
+
+
+require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojlabel',
+'ojs/ojknockout', 'ojs/ojinputtext'],
+function(oj, ko, $)
+{
+$(
+function()
+{
+ko.applyBindings(null,
+document.getElementById('form-container'));
+}
+);
+});
+
+
+Media Queries :
+----------------------------------------------------------------------------------------------------------------
+
+<style>
+@media media_types (expression){
+/* media-specific rules */
+}
+</style>
+
+
+Internationalization and localization :
+----------------------------------------------------------------------------------------------------------------
+
+define({
+ "root": {
+ "label": "Select an application",
+ "menu1": "Payroll",
+ "menu2": "Business Processing",
+ "menu3": "Administration"
+ },
+ "fr": true,
+ "cs": true
+ });

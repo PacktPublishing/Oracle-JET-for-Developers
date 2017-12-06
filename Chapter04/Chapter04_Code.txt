@@ -1,0 +1,526 @@
+﻿Installation and programming :
+----------------------------------------------------------------------------------------------------------------
+
+ <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Knockout JS</title>
+          </head>
+          <body>
+            <h1>Welcome to Knockout JS programming</h1>
+            <table border="1" >
+              <tr >
+                <th colspan="2" style="padding:10px;">
+                  <b>Employee Data from View Model</b>
+                </th>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee First Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empFirstName'></span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee Last Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empLastName'></span>
+                </td>
+              </tr>
+            </table> 
+            <!-- JavaScript resources -->
+              <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+              <script type='text/javascript'>
+                var employeeViewModel = {
+                  empFirstName: "Tony",
+                  empLastName: "Henry"
+                };
+                ko.applyBindings(employeeViewModel);
+            </script>
+          </body>
+        </html>
+
+ 
+ Observables :
+----------------------------------------------------------------------------------------------------------------
+
+ <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Knockout JS</title>
+          </head>
+          <body>
+            <h1>Welcome to Knockout JS programming</h1>
+            <table border="1" >
+              <tr >
+                <th colspan="2" style="padding:10px;">
+                  <b>Employee Data - Organization : 
+                    <span style="color:red" data-bind='text: organizationName'></span>
+                  </b>
+                </th>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee First Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empFirstName'></span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee Last Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empLastName'></span>
+                </td>
+              </tr>
+            </table> 
+            <!-- JavaScript resources -->
+            <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+            <script type='text/javascript'>
+              var employeeViewModel = {
+                empFirstName: "Tony",
+                empLastName: "Henry",
+                organizationName: ko.observable("Sun")
+              };
+              ko.applyBindings(employeeViewModel); 
+              employeeViewModel.organizationName("Oracle");
+            </script>
+          </body>
+        </html>
+
+
+Computed observable :
+----------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout JS</title>
+  </head>
+  <body>
+    <h1>Welcome to Knockout JS programming</h1>
+    <table border="1" >
+      <tr>
+        <th colspan="2" style="padding:10px;">
+          <b>Employee Data - Organization : 
+            <span style="color:red" data-bind='text: organizationName'></span>
+          </b>
+        </th>
+      </tr>
+      <tr>
+        <td style="padding:10px;">Employee First Name:</td>
+        <td style="padding:10px;">
+          <span data-bind='text: empFirstName'></span>
+        </td>
+        </tr>
+        <tr>
+          <td style="padding:10px;">Employee Last Name:</td>
+          <td style="padding:10px;">
+            <span data-bind='text: empLastName'></span>
+          </td>
+        </tr>
+      </table> 
+      <p>Organization Full Name : <span style="color:red" data-bind='text: orgFullName'></span></p>
+ 
+      <!-- JavaScript resources -->
+      <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+      <script type='text/javascript'>
+        var employeeViewModel = {
+          empFirstName: "Tony",
+          empLastName: "Henry", 
+          organizationName: ko.observable("Sun")
+        };
+        employeeViewModel.orgFullName = ko.computed(function() {
+          return employeeViewModel.organizationName() + " Limited";
+        });
+        ko.applyBindings(employeeViewModel); 
+        employeeViewModel.organizationName("Oracle");
+      </script>
+    </body>
+  </html>
+
+
+Observable arrays :
+----------------------------------------------------------------------------------------------------------------
+
+ <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Knockout JS</title>
+          </head>
+          <body>
+            <h1>Welcome to Knockout JS programming</h1>
+            <table border="1" >
+              <tr >
+                <th colspan="2" style="padding:10px;">
+                  <b>Employee Data - Organization : 
+                    <span style="color:red" data-bind='text: organizationName'></span>
+                  </b>
+                </th>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee First Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empFirstName'></span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee Last Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empLastName'></span>
+                </td>
+              </tr>
+            </table> 
+            <p>Organization Full Name : <span style="color:red" data-bind='text: orgFullName'></span></p>
+            <!-- Observable Arrays-->
+            <h2>Observable Array Example : </h2>
+            <table border="1">
+              <thead><tr>
+                <th style="padding:10px;">First Name</th>
+                <th style="padding:10px;">Last Name</th>
+              </tr></thead>
+              <tbody data-bind='foreach: organization'>
+                <tr>
+                  <td style="padding:10px;" data-bind='text: firstName'></td>
+                  <td style="padding:10px;" data-bind='text: lastName'></td>
+                </tr>
+              </tbody>
+            </table>
+ 
+            <!-- JavaScript resources -->
+            <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+            <script type='text/javascript'>
+              function Employee (firstName, lastName) {
+                this.firstName = ko.observable(firstName);
+                this.lastName = ko.observable(lastName);
+              };
+              var employeeViewModel = {
+                empFirstName: "Tony",
+                empLastName: "Henry",
+                //Observable
+                organizationName: ko.observable("Sun"),
+                //Observable Arrays
+ 
+                organization : ko.observableArray([
+                  new Employee("John", "Kennedy"),
+                  new Employee("Peter", "Hennes"),
+                  new Employee("Richmond", "Smith")
+                ])
+              };
+              //Computed Observable
+              employeeViewModel.orgFullName = ko.computed(function() {
+                return employeeViewModel.organizationName() + " Limited";
+              });
+              ko.applyBindings(employeeViewModel); 
+              employeeViewModel.organizationName("Oracle");
+ 
+            </script>
+          </body>
+        </html>
+
+
+Observable arrays (2) :
+----------------------------------------------------------------------------------------------------------------
+
+ <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Knockout JS</title>
+          </head>
+          <body>
+            <h1>Welcome to Knockout JS programming</h1>
+            <table border="1" >
+              <tr >
+                <th colspan="2" style="padding:10px;">
+                  <b>Employee Data - Organization :
+                    <span style="color:red" data-bind='text: organizationName'></span>
+                  </b>
+                </th>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee First Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empFirstName'></span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px;">Employee Last Name:</td>
+                <td style="padding:10px;">
+                  <span data-bind='text: empLastName'></span>
+                </td>
+              </tr>
+            </table> 
+            <p>Organization Full Name : <span style="color:red" data-bind='text: orgFullName'></span></p>
+            <!-- Observable Arrays-->
+            <h2>Observable Array Example : </h2>
+              <table border="1">
+              <thead><tr>
+                <th style="padding:10px;">First Name</th>
+                <th style="padding:10px;">Last Name</th>
+              </tr></thead>
+              <tbody data-bind='foreach: organization'>
+                <tr>
+                  <td style="padding:10px;" data-bind='text: firstName'></td>
+                  <td style="padding:10px;" data-bind='text: lastName'></td>
+                </tr>
+              </tbody>
+            </table>
+            <h2>Add New Employee to Observable Array</h2>
+              First Name : <input data-bind="value: newFirstName" /> 
+              Last Name : <input data-bind="value: newLastName" />
+              <button data-bind='click: addEmployee'>Add Employee</button>
+              <!-- JavaScript resources -->
+              <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+              <script type='text/javascript'>
+                function Employee (firstName, lastName) {
+                  this.firstName = ko.observable(firstName);
+                  this.lastName = ko.observable(lastName);
+                };
+                this.addEmployee = function() {
+                  this.organization.push(new Employee
+                       (employeeViewModel.newFirstName(),
+                        employeeViewModel.newLastName()));
+                };
+                var employeeViewModel = {                
+                  empFirstName: "Tony",
+                  empLastName: "Henry",
+                  //Observable
+                  organizationName: ko.observable("Sun"),
+                  newFirstName: ko.observable(""),
+                  newLastName: ko.observable(""),
+                  //Observable Arrays
+                  organization : ko.observableArray([
+                    new Employee("John", "Kennedy"),
+                    new Employee("Peter", "Hennes"),
+                    new Employee("Richmond", "Smith")
+                  ])
+                };
+                //Computed Observable
+                employeeViewModel.orgFullName = ko.computed(function() {
+                  return employeeViewModel.organizationName() + " Limited";
+                });
+                ko.applyBindings(employeeViewModel);    
+                employeeViewModel.organizationName("Oracle");
+              </script>
+            </body>
+          </html>
+
+
+Control-flow bindings :
+----------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Knockout JS</title>
+  </head>
+  <body>
+    <h1>Welcome to Knockout JS programming</h1>
+    <table border="1" >
+      <tr >
+        <th colspan="2" style="padding:10px;">
+          <b>Employee Data - Organization :
+            <span style="color:red" data-bind='text: organizationName'></span>
+          </b>
+        </th>
+     </tr>
+     <tr>
+       <td style="padding:10px;">Employee First Name:</td>
+       <td style="padding:10px;">
+         <span data-bind='text: empFirstName'></span>
+       </td>
+       </tr>
+       <tr>
+         <td style="padding:10px;">Employee Last Name:</td>
+         <td style="padding:10px;">
+           <span data-bind='text: empLastName'></span>
+         </td>
+       </tr>
+     </table> 
+     <p>Organization Full Name : <span style="color:red" data-bind='text: orgFullName'></span></p>
+     <!-- Observable Arrays-->
+     <h2>Observable Array Example : </h2>
+       
+     <table border="1">
+       <thead><tr>
+         <th style="padding:10px;">First Name</th>
+         <th style="padding:10px;">Last Name</th>
+         <th style="padding:10px;">Age</th>
+       </tr></thead>
+       <tbody data-bind='foreach: organization'>
+         <tr>
+           <td style="padding:10px;" data-bind='text: firstName'></td>
+           <td style="padding:10px;" data-bind='text: lastName'></td>
+           <td data-bind="if: age() > 20" style="color: green;padding:10px;"><span data-bind='text:age'></span></td>
+         </tr>
+       </tbody>
+     </table>
+     <!-- with control flow bindings -->
+     <p data-bind='with: markedEmployee'>
+        Employee <strong data-bind="text: firstName() + ', ' + lastName()"></strong> is marked with the age <strong data-bind='text: age'></strong>.
+     </p>
+     <h2>Add New Employee to Observable Array</h2>
+     First Name : <input data-bind="value: newFirstName" /> 
+     Last Name : <input data-bind="value: newLastName" /> 
+     Age : <input data-bind="value: newEmpAge" />
+     <button data-bind='click: addEmployee'>Add Employee</button>
+     <!-- JavaScript resources -->
+     <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+     <script type='text/javascript'>
+       function Employee (firstName, lastName,age) {
+         this.firstName = ko.observable(firstName);
+         this.lastName = ko.observable(lastName);
+         this.age = ko.observable(age);
+       };
+       this.addEmployee = function() {
+         this.organization.push(new Employee
+             (employeeViewModel.newFirstName(),
+              employeeViewModel.newLastName(),
+              employeeViewModel.newEmpAge()));
+         };
+         var employeeViewModel = { 
+           empFirstName: "Tony",
+           empLastName: "Henry",
+           //Observable
+           organizationName: ko.observable("Sun"),
+           newFirstName: ko.observable(""),
+           newLastName: ko.observable(""),
+           newEmpAge: ko.observable(""),
+           //With control flow object
+           markedEmployee: ko.observable(new Employee("Garry", "Parks", "65")),
+           //Observable Arrays
+           
+           organization : ko.observableArray([
+             new Employee("John", "Kennedy", "24"),
+             new Employee("Peter", "Hennes","18"),
+             new Employee("Richmond", "Smith","54")
+           ])
+         };
+         //Computed Observable
+         employeeViewModel.orgFullName = ko.computed(function() {
+           return employeeViewModel.organizationName() + " Limited";
+         });
+         ko.applyBindings(employeeViewModel); 
+         employeeViewModel.organizationName("Oracle");
+                       
+      </script>
+    </body>
+  </html>
+
+
+Appearance bindings :
+----------------------------------------------------------------------------------------------------------------
+
+ <td data-bind='text: name'></td>
+
+Appearance bindings (2) :
+----------------------------------------------------------------------------------------------------------------
+
+//JavaScript:
+        function Employee(firstname, lastname, age) {
+          ...
+          this.formattedName = ko.computed(function() {
+            return "<strong>" + this.firstname() + "</strong>";
+          }, this);
+        }
+
+        //Html:
+        <span data-bind='html: markedEmployee().formattedName'></span>
+
+Appearance bindings(3) :
+----------------------------------------------------------------------------------------------------------------
+
+<td data-bind='visible: age() > 20' style='color: green'> span data-bind='text:age'>
+
+
+Appearance bindings (4) :
+----------------------------------------------------------------------------------------------------------------
+
+ //CSS:
+        .strongEmployee {
+          font-weight: bold;
+        }
+
+
+        //HTML: 
+        <span data-bind='text: formattedName, css: {strongEmployee}'></span>
+
+
+Appearance bindings (5):
+----------------------------------------------------------------------------------------------------------------
+
+ <span data-bind='text: age, style: {color: age() > 20 ? "green" :"red"}'></span>
+ 
+ Appearance bindings (6):
+----------------------------------------------------------------------------------------------------------------
+
+<p><a data-bind='attr: {href: featuredEmployee().populatelink}'>View Employee</a></p>
+
+Interactive bindings :
+----------------------------------------------------------------------------------------------------------------
+
+<button data-bind='click: addEmployee'>Submit</button>
+
+Interactive bindings (2):
+----------------------------------------------------------------------------------------------------------------
+
+<td>Age: <input data-bind='value: age' /></td>
+
+Interactive bindings (3):
+----------------------------------------------------------------------------------------------------------------
+
+ <p data-bind='event: {mouseover: showEmployee, mouseout:hideEmployee}'> 
+       Age: <input data-bind='value: Age' /> </p>
+	   
+Interactive bindings (4):
+----------------------------------------------------------------------------------------------------------------
+
+<form data-bind="submit: addEmployee">
+          <!—Employee form fields -->
+          <button type="submit">Submit</button>
+        </form>
+		
+Interactive bindings (5):
+----------------------------------------------------------------------------------------------------------------
+
+<p>
+         Last Name: <input data-bind='value: lastName, disable: firstName' />
+       </p>
+	   
+Interactive bindings (6):
+----------------------------------------------------------------------------------------------------------------
+
+ <p>Gender: <input data-bind='checked:gender' type='checkbox' /></p>
+
+Interactive bindings (7):
+----------------------------------------------------------------------------------------------------------------
+
+//Javascript:
+         this.designations = ko.observableArray(['manager', 'administrator']);
+
+       //Html:
+         Designation: <select data-bind='options: designations'></select>
+
+Interactive bindings (8):
+----------------------------------------------------------------------------------------------------------------
+
+Designation: <select data-bind='options: designations, 
+                      optionsText:"Select", selectedOptions:defaultDesignation'>
+        </select>
+
+Interactive bindings (9):
+----------------------------------------------------------------------------------------------------------------
+
+ First Name: <input data-bind='value: firstName, hasfocus: firstNameHasFocus' />
+
+External data access and animations :
+----------------------------------------------------------------------------------------------------------------
+
+<p><button data-bind='click: loadEmployee'>Load Data</button></p>
+
+External data access and animations (2) :
+----------------------------------------------------------------------------------------------------------------
+
+ self. loadEmployee = function() {
+          $.getJSON("/get-employee", function(data) {
+            employeeViewModel.firstName=data.firstName;
+          });
+        }
+		
